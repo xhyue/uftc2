@@ -139,3 +139,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'userinfo.AdminInfo'
+
+from datetime import datetime, timedelta
+SECRET_KEY = "quscsacascascashmxiaobao"
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': timedelta(seconds=36000),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=1),
+    'JWT_SECRET_KEY' :"quhmxiaobao",
+    'JWT_SECRET_KEY': SECRET_KEY,
+
+}
