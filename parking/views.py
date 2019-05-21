@@ -98,6 +98,7 @@ class GetRoute(APIView):
         return JsonResponse({"code": code, "data": data, "msg": msg})
 
 
+
 class ParkingDetail(APIView):
 
     def post(self, request):
@@ -182,3 +183,4 @@ class SearchParking(APIView):
         msg = "搜索停车场信息获取成功"
         maxpage = maxPage
         return JsonResponse({"code": code, "data": data, "maxpage":maxpage, "msg": msg})
+

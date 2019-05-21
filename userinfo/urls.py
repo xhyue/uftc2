@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'phonelogin', PhoneLogin.as_view(), name='phone_login'),
     url(r'^cusinfo', CustomerInfo.as_view(), name='customer_info'),
 
+
 ]

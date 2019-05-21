@@ -99,7 +99,6 @@ class PhoneLogin(APIView):
                 wallet = Wallet.objects.create(customer=user, money=0, is_active=True, tran_password='123456')
             except ObjectDoesNotExist as e:
                 logger.error(e)
-            # user = UserInfo.objects.filter(customer_name=uphone)
             code = 1003
             msg = "注册成功"
             # jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
