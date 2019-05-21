@@ -239,3 +239,15 @@ JWT_AUTH = {
 #     }
 # }
 
+BAIDUAK = 'GqohPozNne3cPFtPhkEu0KM4urYPZlTF'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "collected_static")
+
+STATICFILES_DIRS = (
+        os.path.join(BASE_DIR,'static'),
+)
+
+
+# alipay
+ALIPAY_APP_ID = '2088102177944944'
