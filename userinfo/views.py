@@ -31,6 +31,7 @@ class VerifyCodeView(APIView):
             code = 1002
             data = ""
             msg = "手机号不正确，请重新输入"
+            return JsonResponse({"code": code, "data": data, "msg": msg})
         result = SendVerifyCode(phone)
         result_dict = json.loads(result._SendVerifyCode__sendsms)
         print(result_dict)
@@ -96,7 +97,6 @@ class PhoneLogin(APIView):
                 user = UserInfo.objects.create(customer_name=uphone, customer_pwd=customer_pwd, nickname=nickname, gender=gender, birth=birth, openid=openid)
             except ObjectDoesNotExist as e:
                 logger.error(e)
-            # user = UserInfo.objects.filter(customer_name=uphone)
             code = 1003
             msg = "注册成功"
             # jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -122,7 +122,7 @@ class CustomerInfo(APIView):
         customer = UserInfo.objects.filter(id=customer_id)
         if customer:
             code = 1000
-            data['logo'] = customer[0].avatar
+            data['logo'] = str(customer[0].avatar)
             data['username'] = customer[0].nickname
             data['uid'] = customer[0].id
             data['moneybag'] = 'null'
