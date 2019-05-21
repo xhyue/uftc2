@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^api/index/', include('parking.urls')),
     url(r'^api/pay/', include('pay.urls')),
     url(r'^', include('backend.urls')),
-    url(r'^', include('parkbackend.urls')),
+    url(r'^api/backend/', include('parkbackend.urls')),
 ]
