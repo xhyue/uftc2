@@ -1,3 +1,4 @@
+
 # restful API
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
@@ -11,10 +12,12 @@ from django.core.exceptions import ObjectDoesNotExist
 # selfproject
 from .verifycode import *
 from .models import *
+from pay.models import *
 
 # base
 import logging
 import re
+import random
 # import jwt
 
 # Create your views here.
@@ -34,7 +37,6 @@ class VerifyCodeView(APIView):
             return JsonResponse({"code": code, "data": data, "msg": msg})
         result = SendVerifyCode(phone)
         result_dict = json.loads(result._SendVerifyCode__sendsms)
-        print(result_dict)
         try:
             sendsms = result_dict['sendsms']
         except KeyError as e:
@@ -86,7 +88,6 @@ class PhoneLogin(APIView):
             nicknamelistf = ['爱吃', '讨厌', '咬着', '手拿']
             nicknamelists = ['榴莲的', '苹果的', '花生的', '炸鸡的', '煎饼的']
             nicknamelistt = ['孙悟空', '猪八戒', '唐僧', '猫', '狗', '哈士奇', '张飞', '达芬奇', '蓝皮鼠', '大脸猫', '皮卡丘', '忍者神龟', '皮皮璐', '小王']
-
             nickname = nicknamelistf[random.randint(0, 3)] + nicknamelists[random.randint(0, 4)] + nicknamelistt[
                 random.randint(0, 13)] + num
             customer_pwd = "123456"
@@ -95,6 +96,7 @@ class PhoneLogin(APIView):
             openid = '12'
             try:
                 user = UserInfo.objects.create(customer_name=uphone, customer_pwd=customer_pwd, nickname=nickname, gender=gender, birth=birth, openid=openid)
+                wallet = Wallet.objects.create(customer=user, money=0, is_active=True, tran_password='123456')
             except ObjectDoesNotExist as e:
                 logger.error(e)
             code = 1003
@@ -135,9 +137,5 @@ class CustomerInfo(APIView):
             data['moneybag'] = 'null'
             msg = '个人信息获取失败'
         return JsonResponse({"code": code, "data": data, "msg": msg})
-
-
-
-
 
 

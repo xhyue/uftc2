@@ -22,7 +22,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/customer/', include('userinfo.urls')),
     url(r'^api/index/', include('parking.urls')),
-    url(r'^api/rent/', include('pay.urls')),
-    url(r'^api/backend/', include('backend.urls')),
-    url(r'^api/parkbackend/', include('parkbackend.urls')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    url(r'^api/pay/', include('pay.urls')),
+    url(r'^', include('backend.urls')),
+    url(r'^', include('parkbackend.urls')),
+]
+

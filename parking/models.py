@@ -1,7 +1,7 @@
 from django.db import models
 from userinfo.models import *
 from pay.models import Bank
-
+from .readdata import *
 # Create your models here.
 
 PARKING_LOT_TYPE = (
@@ -52,25 +52,29 @@ class ParkingLot(models.Model):
     parking_name = models.CharField(verbose_name='停车场名称', max_length=30)
     parking_type = models.IntegerField(verbose_name='停车场类型', choices=PARKING_LOT_TYPE, default=0)
     owner_type = models.IntegerField(verbose_name='所属权类型', choices=OWNER_TYPE, default=0)
-    province = models.CharField(verbose_name='省', max_length=50)
-    city = models.CharField(verbose_name='市', max_length=50)
-    area = models.CharField(verbose_name='区', max_length=50)
+    province = models.CharField(verbose_name="省",max_length=50, choices=get_json_province("provinces"), default=0)
+    city = models.CharField(verbose_name="市",max_length=50, choices=get_json_province("citys"), default=0)
+    area = models.CharField(verbose_name="区",max_length=50, choices=get_json_province("areas"), default=0)
     address = models.CharField(verbose_name='详细地址', max_length=200)
-    longitude = models.DecimalField(verbose_name='经度', max_digits=60, decimal_places=20)
-    latitude = models.DecimalField(verbose_name='维度', max_digits=60, decimal_places=20)
+    longitude = models.FloatField(verbose_name='经度')
+    latitude = models.FloatField(verbose_name='维度')
     total_number = models.IntegerField(verbose_name='总车位数')
     contact_info = models.CharField(verbose_name='联系方式', max_length=20)
     contact = models.CharField(verbose_name='联系人', max_length=20)
     remain_number = models.IntegerField(verbose_name='剩余车位数')
-    banners = models.TextField(verbose_name='轮播图')
+    banners_one = models.ImageField(verbose_name='轮播图',upload_to='static/img/banner/', null=True, default='normal.png')
+    banners_two = models.ImageField(verbose_name='轮播图',upload_to='static/img/banner/', null=True, default='normal.png')
+    banners_three = models.ImageField(verbose_name='轮播图',upload_to='static/img/banner/', null=True, default='normal.png')
     device_number = models.IntegerField(verbose_name='设备数')
     is_active = models.BooleanField(verbose_name='是否激活', default=True)
     active_date = models.DateTimeField(verbose_name='激活日期')
     effect_time = models.IntegerField(verbose_name='有效时间')
     others = models.TextField(verbose_name='其他')
 
+
     def __str__(self):
         return self.parking_name
+
 
     class Meta:
         verbose_name = '停车场表'

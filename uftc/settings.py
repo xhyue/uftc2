@@ -149,6 +149,18 @@ MEDIA_URL = '/'
 
 AUTH_USER_MODEL = 'userinfo.AdminInfo'
 
+
+from datetime import datetime, timedelta
+SECRET_KEY = "quscsacascascashmxiaobao"
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': timedelta(seconds=36000),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=1),
+    'JWT_SECRET_KEY' :"quhmxiaobao",
+    'JWT_SECRET_KEY': SECRET_KEY,
+
+}
+
 # import logging
 # import django.utils.log
 # import logging.handlers
@@ -235,3 +247,16 @@ AUTH_USER_MODEL = 'userinfo.AdminInfo'
 #         }
 #     }
 # }
+
+BAIDUAK = 'GqohPozNne3cPFtPhkEu0KM4urYPZlTF'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "collected_static")
+
+STATICFILES_DIRS = (
+        os.path.join(BASE_DIR,'static'),
+)
+
+
+# alipay
+ALIPAY_APP_ID = '2088102177944944'
