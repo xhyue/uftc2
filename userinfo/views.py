@@ -13,11 +13,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from .verifycode import *
 from .models import *
 from pay.models import *
+from .serializers import *
 
 # base
 import logging
 import re
 import random
+import base64
 # import jwt
 
 # Create your views here.
@@ -139,3 +141,55 @@ class CustomerInfo(APIView):
         return JsonResponse({"code": code, "data": data, "msg": msg})
 
 
+class SelfCar(APIView):
+
+    def post(self, request):
+        customer_id = request.POST.get("uid", '')
+        carImg = request.POST.get("carImg", '')
+        carImg_list = re.split(r'&&&', carImg)
+        dlogo = request.POST.get("dlogo", '')
+        brand = request.POST.get("brand", '')
+        version = request.POST.get("version", '')
+        displacement = request.POST.get("version", '')
+        plate = request.POST.get("plate", '')
+        i = 0
+        img_list = []
+        for ppl in carImg_list:
+            car_picture = base64.b64decode(ppl[23:])
+            img_name = str(customer_id)+ "_" + str(i)
+            with open('./img/license/' + img_name + '.png', 'wb') as f:
+                f.write(car_picture)
+            img_list.append('img/license/' + img_name + '.png')
+            i = i + 1
+        customer = UserInfo.objects.filter(id=customer_id)[0]
+        try:
+            CarInfo.objects.create(customer=customer, brand=brand, version=version, type=3, displacement=displacement, plate=plate, drive_license=str(img_list).replace(" ",""))
+        except ObjectDoesNotExist as e:
+            logger.error(e)
+        code = 1000
+        data = ""
+        msg = "车辆信息绑定成功"
+        return JsonResponse({"code": code, "data": data, "msg": msg})
+
+    # ^ [\u4e00 -\u9fa5][a - zA - Z]\d{5}[\u4e00 -\u9fa5]?$
+    # re.match(pattern, string, flags=0)
+    def get(self, request):
+        customer_id = request.GET.get("uid", '')
+        car_list = CarInfo.objects.filter(customer_id=customer_id)
+        if car_list:
+            car_data = CarInfoSerializer(car_list, many=True)
+            car_data = car_data.data
+            code = 1000
+            data = car_data[0]
+            msg = "获取车牌成功"
+            print(car_data[0])
+            return JsonResponse({"code": code, "data": data, "msg": msg})
+        else:
+            code = 1000
+            data = ""
+            msg = "未绑定车牌"
+            return JsonResponse({"code": code, "data": data, "msg": msg})
+
+
+# /api/user/carposDetail
+# /api/carpos/index

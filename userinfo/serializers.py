@@ -24,3 +24,15 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         fields = ('customer_name','nickname','avatar','gender','birth','openid')
+
+class CarInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CarInfo
+        fields = ('id', 'plate', 'brand', 'version', 'type', 'displacement', 'carImg')
+
+    carImg = serializers.SerializerMethodField('carImg_field')
+
+    def carImg_field(self, obj):
+        drive_license = str(obj.drive_license)
+        return drive_license

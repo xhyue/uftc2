@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(UserInfo)
 admin.site.register(AdminInfo)
 admin.site.register(Property)
+admin.site.register(CarInfo)

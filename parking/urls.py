@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^getroute', GetRoute.as_view(), name='getroute_view'),
     url(r'^detail', ParkingDetail.as_view(), name='detail_view'),
     url(r'^parksearch', SearchParking.as_view(), name='parksearch_view'),
+    url(r'^selfparking', GetSelfParking.as_view(), name='selfparking_view'),
 ]

@@ -139,3 +139,74 @@ class CAddCityListSerializer(serializers.ModelSerializer):
 
     def name_field(self, obj):
         return obj.parking_name
+
+
+class SelfParkingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ParkingSpace
+        fields = ('id', 'number', 'style', 'status', 'name', 'address', 'area', 'sfrom', 'title', 'latitude', 'longitude')
+
+    number = serializers.SerializerMethodField('number_field')
+
+    def number_field(self, obj):
+        return obj.parking_number
+
+    style = serializers.SerializerMethodField('style_field')
+
+    def style_field(self, obj):
+        check_status = obj.check_status
+        if check_status == 0:
+            return 3
+        elif check_status == 1:
+            return 1
+        elif check_status == 2:
+            return 2
+
+    status = serializers.SerializerMethodField('status_field')
+
+    def status_field(self, obj):
+        parking_type = obj.parking_type
+        if parking_type == 0:
+            return '维护中'
+        elif parking_type == 1:
+            return '租赁中'
+        elif parking_type == 2:
+            return '停车中'
+        elif parking_type == 3:
+            return '空置中'
+
+    name = serializers.SerializerMethodField('name_field')
+
+    def name_field(self, obj):
+        return obj.parking.parking_name
+
+    address = serializers.SerializerMethodField('address_field')
+
+    def address_field(self, obj):
+        return obj.parking.address
+
+    area = serializers.SerializerMethodField('area_field')
+
+    def area_field(self, obj):
+        return obj.parking.city
+
+    sfrom = serializers.SerializerMethodField('sfrom_field')
+
+    def sfrom_field(self, obj):
+        return obj.parking_type
+
+    title = serializers.SerializerMethodField('title_field')
+
+    def title_field(self, obj):
+        return '失败原因:图片不清晰'
+
+    latitude = serializers.SerializerMethodField('latitude_field')
+
+    def latitude_field(self, obj):
+        return obj.parking.latitude
+
+    longitude = serializers.SerializerMethodField('longitude_field')
+
+    def longitude_field(self, obj):
+        return obj.parking.longitude

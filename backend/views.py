@@ -14,13 +14,8 @@ from django.core.files.base import ContentFile
 from django.core.cache import cache
 from django.http import JsonResponse
 
-
-
 #base
 import os
-import cv2
-from PIL import Image
-import numpy as np
 import datetime
 import time
 

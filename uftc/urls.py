@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^api/pay/', include('pay.urls')),
     url(r'^', include('backend.urls')),
     url(r'^api/backend/', include('parkbackend.urls')),
-]
+]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 

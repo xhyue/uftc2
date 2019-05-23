@@ -16,6 +16,14 @@ ADMIN_CHIOCES = (
     (3, "收费员"),
 )
 
+CAR_TYPE = (
+    (1,"审核通过"),
+    (2,"审核失败"),
+    (3,"验证中"),
+)
+
+
+
 
 class UserInfo(models.Model):
     customer_name = models.CharField(verbose_name='用户', max_length=20, null=False, unique=True)
@@ -61,6 +69,20 @@ class Property(models.Model):
         verbose_name_plural = verbose_name
 
 
+class CarInfo(models.Model):
+    customer = models.ForeignKey(UserInfo)
+    brand = models.CharField(verbose_name='品牌', max_length=30, null=True)
+    version = models.CharField(verbose_name='型号', max_length=30, null=True)
+    type = models.IntegerField(verbose_name='审核进度',choices=CAR_TYPE,default=3)
+    displacement = models.CharField(verbose_name='排量', max_length=30, null=True)
+    plate = models.CharField(verbose_name='车牌号', max_length=30, null=True)
+    drive_license = models.ImageField(verbose_name='车牌/驾驶证',upload_to='img/license/', null=True, default='normal.png')
 
+    def __str__(self):
+        return self.customer.customer_name
+
+    class Meta:
+        verbose_name = '车牌表'
+        verbose_name_plural = verbose_name
 
 

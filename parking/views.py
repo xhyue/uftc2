@@ -11,6 +11,7 @@ from .serializers import *
 from backend.models import *
 from .baidumap import *
 
+import math
 # Create your views here.
 
 # index park list
@@ -156,7 +157,7 @@ class SearchParking(APIView):
         to_page = int(page) * 10 -1
         # parking = ParkingLot.objects.filter(city=city, id__range=(from_page, to_page))
         parking = ParkingLot.objects.filter(city=city)
-        maxPage = ParkingLot.objects.filter(city=city).count()
+        maxPage = ParkingLot.objects.filter(city=city).count()/10
         parking_list = []
         for pa in parking:
             park = {}
@@ -183,4 +184,28 @@ class SearchParking(APIView):
         msg = "搜索停车场信息获取成功"
         maxpage = maxPage
         return JsonResponse({"code": code, "data": data, "maxpage":maxpage, "msg": msg})
+
+
+# 获取个人录入车位信息
+class GetSelfParking(APIView):
+
+    def post(self, request):
+        uid = request.POST.get("uid", '')
+        page = request.POST.get("page", '')
+        from_page = (int(page) - 1) * 10
+        to_page = int(page) * 10 - 1
+        parkingspace = ParkingSpace.objects.filter(customer_id=uid)
+        maxPage = math.ceil(parkingspace.count()/10)
+        padata = SelfParkingSerializer(parkingspace,many=True)
+        data = {}
+        pa_list = padata.data[from_page:to_page]
+        code = 1000
+        data['list'] = pa_list
+        maxpage = maxPage
+        msg = "车位信息获取成功"
+        print(data,maxPage)
+        return JsonResponse({"code": code, "data": data, "maxpage":maxpage, "msg": msg})
+
+
+
 

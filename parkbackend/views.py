@@ -14,7 +14,7 @@ from parking.models import *
 import logging
 import base64
 import re
-
+import random
 
 logger = logging.getLogger('sourceDns.webdns.views')
 
@@ -52,15 +52,43 @@ class CustomerAddParking(APIView):
         mg_id = request.POST.get("mg_id", "")
         parking_picture_list  = request.POST.get("logo","")
         parking_picture_list = re.split(r'&&&', parking_picture_list)
+        i=0
+        data ={}
+        img_list = []
         for ppl in parking_picture_list:
-            parking_picture = base64.b64decode(ppl)
-            with open('./images/headphoto/' + parking_picture + '.png', 'wb') as f:
+
+            parking_picture = base64.b64decode(ppl[23:])
+            img_name = str(uid) + mg_id + str(number) +str(i)
+            with open('./img/selfparking/' + img_name + '.png', 'wb') as f:
                 f.write(parking_picture)
-        # if parking_picture_list != '':
-        #     headph = base64.b64decode(parking_picture_list)
-        #     with open('./images/headphoto/' + headname + '.png', 'wb') as f:
-        #         f.write(headph)
-        pass
+            img_list.append('./img/selfparking/' + img_name+'.png')
+            i=i+1
+        customer = UserInfo.objects.filter(id=uid)[0]
+        parking = ParkingLot.objects.filter(id=mg_id)[0]
+        position = "露天"
+        parking_number = number
+        check_status = 0
+        parking_type = 0
+        parking_status = 3
+        parking_picture = str(img_list)
+        parking_owner = 0
+        is_sensor = False
+        sensor_number = '000001'
+        self_park_space = ParkingSpace.objects.filter(parking_number=number,parking_id=mg_id)
+        if self_park_space:
+            code = 1006
+            data = data
+            msg = "该车位已经被人租用,暂无法申请"
+            return JsonResponse({"code": code, "data": data, "msg": msg})
+        try:
+            park_space = ParkingSpace.objects.create(customer=customer, parking=parking, position=position, parking_number=parking_number, check_status=check_status, parking_type=parking_type, parking_status=parking_status, parking_picture=parking_picture, parking_owner=parking_owner, is_sensor=is_sensor, sensor_number=sensor_number)
+        except ObjectDoesNotExist as e:
+            logger.error(e)
+        data['pid']=park_space.id
+        code = 1000
+        data = data
+        msg = "无停车场"
+        return JsonResponse({"code": code, "data": data, "msg": msg})
 
     def get(self,request):
         province = request.GET.get("province","")
@@ -157,7 +185,8 @@ class CustomerAddParking(APIView):
             data = {}
             msg = "无停车场"
             return JsonResponse({"code": code, "data": data, "msg": msg})
-# /api/user/myCarpos
-# /api/user/addCarpos
+
+
+
 
 
