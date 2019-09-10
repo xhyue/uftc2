@@ -1,0 +1,13 @@
+uftc/__pycache__/*
+backend/__pycache__/*
+backend/migrations/*
+hyparkhome/__pycache__/*
+hyparkhome/migrations/*
+parkbackend/__pycache__/*
+parkbackend/migrations/*
+parking/__pycache__/*
+parking/migrations/*
+pay/__pycache__/*
+pay/migrations/*
+userinfo/__pycache__/*
+userinfo/migrations/*
