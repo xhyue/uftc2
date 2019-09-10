@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '2paj^l#lgg&l4e6(i(8!q^4!xx-fp!g*(-@t3w%&hnl3)fei(w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'parkbackend',
     'corsheaders',
     'rest_framework',
+    'hyparkhome',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -137,12 +138,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # STATIC_ROOT = os.path.join(BASE_DIR, "collected static")
 #
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'collected_static'),)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '').replace('\\', '/')
 MEDIA_URL = '/'
@@ -258,5 +258,19 @@ STATICFILES_DIRS = (
 )
 
 
-# alipay
-ALIPAY_APP_ID = '2088102177944944'
+# alipayhm
+ALIPAY_APP = {
+    'ALIPAY_APP_ID': '2016093000631139',
+    'ALIPAY_APP_PRIVATE_KEY': 'MIIEpQIBAAKCAQEAwBMs45iyxcIVC3kYAFnjCpWCjN1N0wiYXE2WWmQsK69VMfP5Xd0wUHxOqX2+LcSDJhrJPF9/0/LO5kc5OKsS5wOY9GAFSA7RxQ4KwG6LbzIkuxQPzEJLXHI5ZahKpMz3korEdAWz/aWXQXJRz7rHR2PQ07Rpxh4tF8Gm47BKs4tm8iKGK1dD75GAGY1gMJdXI7hbEOUyQvAPtm4BTQjm6Uvu9NFT+biKf47xRt+ibrFyQTl/KTcRyl4XKe1pafsA2FYeL31yazgqw+lRTyu2AYFWqAmmYHfAzw8cthD1MBIfeJwPV2MYiBmU2QUe45TUWJtb/ovJ4cVGZTt4gvwaDwIDAQABAoIBAHu5HlYw2x8lqHaudvZq8CO2MNTaDLJeO/5g//OTyRwOobs+o6eBvghqOiVVWPaUOcKGyI96GJYHNp0Azewhzlg+af0oCN7kpNzg8a4IxwpGa4CSKKbzISYYcb54zDQhz2t2tZrivZEqZCcFI4vCjXD/69kiwmuaroM5+2149nV1vHT2CQd+gMLQryfW1O4dqHlt0itB8NP+HWPO4c4SazL/M7evlXKmkYOlVk3aWo295nwBvkYoC4pHv/sNPEyn2dS14E0kWEo6mOQN5HfgaJyk9KwdwdfKkOpY8U8vVpdXSTzLoOIZ+ITOOfRy+Dj+AS8yaD+MInFUsXLFy6k1upECgYEA8oXfbLZyTUT30FZGTk727+bD5PE1HNRZeRGQcaobml4WIWr6ahLhDxDtpGRU+OIY1fJ/USmK2PGjaN+tGXQXwoLJGgO4UcCR04LbwgPUv7/7XOgMQn3qmZjYIf/MUJnVD+i4cvo97d4FzjCKsdUgINC28RcWMznlIaUg5ZBjCTcCgYEAyr+hMpbpSrVJ77+/kqekqzxDBoetDRT9dxer0Z8ISgGlxJH2tRr81itd7vlBDwbgvJsifogmzjfHFJzHDPIb1/9bLLKodzFwdz6u5P0khFoS5kV1y4ZZT+i7wDvzC2ILc8ETnGCrW4NHsvg6mjLVZl5o2dGMDOL1S/ug4yJsgekCgYEAjjdA6IAokPUzmOEuwzb9CXs6PqPPsIM5oIxTNsQ5AZHQynHwPImrnmkf4fnP9k6nn7ZfQJnqyQMR/yrDWBzC3hZRlUa/LHmPSgf/lEso0/Thkv6kSc2K591ASNe22UEMNxMSLqJd9IHwx5OhkVzYRUX/MWuHYiy+F7e8jcHYwYsCgYEAnOT7/iUQNVLi+1ecDQYUBLqmd3gorzXuCunTeWyiwnpR6DK4Al/3Blka4KIb+V/uK6W1ZMtBlFVPhqDn3BnC+DxQNt+uREaK7IwiVWubhZwagf2AcVXu6UqFd/YsV0Ow7wubfGjGUhPeOR2kY80wnH40j1J8GUDMZ9c6ImpyI3kCgYEAkDC+6l014MHpiZK1wr/qqv1r6LnFN4oi/EO4qKgxV+7aLk43egsTg8ChBhzj78Cfl4HpMHbJRprOghrnmnDOT6fK9GjLgQkBAXxymCpqaEbSqgrhrMFqraRGB/P/K1Ep3onpqh6hAFrT4RM+2oUtsW00w8292E4N6DWMgC88g6k=',
+    'ALIPAY_ALI_PUBLIC_KEY': 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7PV8NWNEeZTX7/ZSFWUe+iwv8WwDnEY1PFLA8mY0D1q5uANY7yJlpcKflCgYS61Gze85q9S2ZY48rkV1gSFjm5YSAOc2v+gnznYJiNau7VsD6xWE6fccCrMgZwSb9PqacAenjt7sxcpP86GfqfkDohVf1ZXGy3v3nn+rSnWS8cfKbBODyMdcKObYZ+3wQnKf2cwE5i1w8J4jyabXZMMH8TJ/MiH1s9OvCAjZNBqGq6pUGAXOuwu/UMUMCRJZodMr8bwWbhwcLd4MxKkjIkX2ClXyH+Tsnc+jQ3tCMdRlvAIcWDShr/E3g/zRmsdKHX2SHlg0dWV/Mgi0F3uwIDaBMwIDAQAB',
+    'ALIPAY_TIMEOUT_EXPRESS': '90m',
+    'ALIPAY_NOTIFY_URL': '',
+}
+
+# wxpayhm
+WX_APP = {
+    'WX_APP_ID': 'wxe950bea6bf500e6b',
+    'WX_MCH_ID': '1523323611',
+    'WX_NOTIFY_URL': '',
+    'WX_SELF_KEY':'',
+}

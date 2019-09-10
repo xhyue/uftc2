@@ -116,6 +116,53 @@ class PhoneLogin(APIView):
         return JsonResponse({"code": code, "data": data, "msg": msg})
 
 
+class WXLogin(APIView):
+    def post(self, request):
+        openid = request.POST.get("openid", "")
+        nickname = request.POST.get("nickname", "")
+        gender = request.POST.get("gender", "")
+        headimg = request.POST.get("headimg", "")
+        unionid = request.POST.get("unionid", "")
+        print("@@@@@",openid)
+        customer = UserInfo.objects.filter(openid=openid)
+        if customer:
+            code = 1000
+            msg = "登录成功"
+            # jwt_payload_handler = api_s0ettings.JWT_PAYLOAD_HANDLER
+            # jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+            # logininfo = jwt_payload_handler(customer)
+            # token = jwt_encode_handler(logininfo)
+            data = {}
+            data['uid'] = customer[0].id
+            data['avatar'] = str(customer[0].avatar)
+            data['sex'] = customer[0].gender
+            data['username'] = customer[0].customer_name
+            # data['token'] = token
+        else:
+
+            customer_pwd = "123456"
+
+            birth = '2019-05-09'
+            try:
+                user = UserInfo.objects.create(customer_name='wx'+unionid, customer_pwd=customer_pwd, nickname='aaaa', gender=int(gender), birth=birth, openid=openid)
+                wallet = Wallet.objects.create(customer=user, money=0, is_active=True, tran_password='123456')
+            except ObjectDoesNotExist as e:
+                logger.error(e)
+            code = 1003
+            msg = "注册成功"
+            # jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+            # jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+            # logininfo = jwt_payload_handler(user)
+            # token = jwt_encode_handler(logininfo)
+            data = {}
+            data['uid'] = user.id
+            data['avatar'] = str(user.avatar)
+            data['sex'] = user.gender
+            data['username'] = user.customer_name
+            # data['token'] = token
+        return JsonResponse({"code": code, "data": data, "msg": msg})
+
+
 class CustomerInfo(APIView):
 
     def post(self, request):
@@ -123,7 +170,7 @@ class CustomerInfo(APIView):
         retoken = request.POST.get("token", '')
         code = 1001
         data = {}
-        customer = UserInfo.objects.filter(id=customer_id)
+        customer = UserInfo.objects.filter(id=int(customer_id))
         if customer:
             code = 1000
             data['logo'] = str(customer[0].avatar)

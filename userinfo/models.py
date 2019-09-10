@@ -22,11 +22,11 @@ CAR_TYPE = (
     (3,"验证中"),
 )
 
-
+# 4739
 
 
 class UserInfo(models.Model):
-    customer_name = models.CharField(verbose_name='用户', max_length=20, null=False, unique=True)
+    customer_name = models.CharField(verbose_name='用户', max_length=200, null=False, unique=True)
     customer_pwd = models.CharField(verbose_name='密码', max_length=200, null=False)
     nickname = models.CharField(verbose_name='昵称', max_length=20, null=False, unique=True)
     avatar = models.ImageField(verbose_name='头像', upload_to='img/avatar', default='')
@@ -84,5 +84,3 @@ class CarInfo(models.Model):
     class Meta:
         verbose_name = '车牌表'
         verbose_name_plural = verbose_name
-
-
